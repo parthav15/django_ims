@@ -70,18 +70,27 @@ class Purchase(models.Model):
             sale_qty=None,
             total_bal_qty=totalBal
         )
+        
+#Customer
+class Customer(models.Model):
+    customer_name = models.CharField(max_length=50)
+    customer_mobile = models.CharField(max_length=50)
+    customer_address = models.TextField()
+    
+    class Meta:
+        verbose_name_plural = '7. Customers'
+    
+    def __str__(self):
+        return self.customer_name
     
 #Sale
 class Sale(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     qty = models.FloatField()
     price = models.FloatField()
     total_amt = models.FloatField(editable=False)
     sale_date = models.DateTimeField(auto_now_add=True)
-    
-    customer_name = models.CharField(max_length=50,blank=True)
-    customer_mobile = models.CharField(max_length=50)
-    customer_address = models.TextField()
     
     class Meta:
         verbose_name_plural = '5. Sales'
@@ -131,3 +140,13 @@ class Inventory(models.Model):
     def sale_date(self):
         if self.sale:
             return self.sale.sale_date
+        
+    def customer_name(self):
+        if self.sale:
+            return self.sale.customer_name
+        return None
+        
+    def vendor_name(self):
+        if self.purchase:
+            return self.purchase.vendor.full_name
+        return None
