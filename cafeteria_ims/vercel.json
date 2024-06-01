@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "cafeteria_ims/wsgi.py",
+            "use": "@vercel/python",
+            "config": {"maxlambaSize": "15mb", "runtime": "python3.0"}
+        },
+        {
+            "src": "cafeteria_ims/wsgi.py",
+            "use": "@vercel/static_build",
+            "config": {
+                "distDir": "staticfiles_build"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/static/**",
+            "dest": "staticfiles_build/**"
+        },
+        {
+            "src": "/**",
+            "dest": "cafeteria_ims/wsgi.py"
+        }
+    ]
+}
